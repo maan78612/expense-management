@@ -3,7 +3,7 @@ import 'package:expense_managment/src/core/manager/color_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:expense_managment/src/core/constants/colors.dart';
+
 import 'package:expense_managment/src/core/constants/fonts.dart';
 import 'package:expense_managment/src/core/constants/images.dart';
 import 'package:expense_managment/src/features/splash/presentation/viewmodels/splash_viewmodel.dart';

@@ -62,7 +62,7 @@ class NotificationDataSource {
 
         if (userSnapshot.exists) {
           // Assuming the FCM token is stored under the 'fcmToken' field in the user's document
-          String? fcmToken = userSnapshot['fcm'];
+          String? fcmToken = userSnapshot['fcmToken'];
 
           // Add the FCM token to the list if it's not null and not empty
           if (fcmToken != null && fcmToken.isNotEmpty) {

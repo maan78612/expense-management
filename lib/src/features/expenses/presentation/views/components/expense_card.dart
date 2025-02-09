@@ -24,8 +24,7 @@ class _ExpenseCard extends ConsumerWidget {
             icon: Icons.delete,
             label: 'Delete',
             onPressed: (BuildContext context) {
-              expenseListViewModel.deleteExpense(
-                  expense, ref.read(userModelProvider));
+              _showDeleteDialog(context, colorMode, expenseListViewModel, ref);
             },
           ),
           SlidableAction(
@@ -123,6 +122,49 @@ class _ExpenseCard extends ConsumerWidget {
         color: Colors.white,
         size: 28,
       ),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, ColorMode colorMode,
+      ExpenseListViewModel expenseListViewModel, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          backgroundColor: AppColorHelper.getScaffoldColor(colorMode),
+          title: Text(
+            'Delete Expense',
+            style: PoppinsStyles.semiBold(
+                    color: AppColorHelper.getPrimaryTextColor(colorMode))
+                .copyWith(fontSize: 16.sp),
+          ),
+          content: Text('Are you sure you want to delete?',
+              style: PoppinsStyles.regular(
+                      color: AppColorHelper.getSecondaryTextColor(colorMode))
+                  .copyWith(fontSize: 12.sp)),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel',
+                  style: PoppinsStyles.medium(
+                          color: AppColorHelper.getPrimaryTextColor(colorMode))
+                      .copyWith(fontSize: 14.sp)),
+              onPressed: () {
+                CustomNavigation().pop(); // Dismiss the dialog
+              },
+            ),
+            TextButton(
+              child: Text('Delete',
+                  style: PoppinsStyles.medium(color: AppColors.redColor)
+                      .copyWith(fontSize: 14.sp)),
+              onPressed: () {
+                CustomNavigation().pop();
+                expenseListViewModel.deleteExpense(
+                    expense, ref.read(userModelProvider));
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

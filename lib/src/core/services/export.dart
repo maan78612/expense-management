@@ -41,26 +41,33 @@ class ExportService {
   static Future<void> exportToPDF(List<ExpenseModel> expenses) async {
     final pdf = pw.Document();
 
+    // Calculate the total amount of all expenses
+    final totalAmount =
+        expenses.fold(0.0, (sum, expense) => sum + expense.amount);
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Header(
                 level: 0,
-                child: pw.Text('Expense Report',
-                    style: pw.TextStyle(fontSize: 24)),
+                child: pw.Text(
+                  'Expense Report',
+                  style: pw.TextStyle(fontSize: 24),
+                ),
               ),
-              pw.Table.fromTextArray(
-                headers: ['Date', 'Title', 'Amount', 'Category', 'Time'],
+              pw.TableHelper.fromTextArray(
+                headers: ['Date', 'Title', 'Amount', 'Category'],
+                // Removed 'Time'
                 data: expenses
                     .map((e) => [
                           DateFormat('yyyy-MM-dd').format(e.date),
                           e.title,
                           '\$${e.amount.toStringAsFixed(2)}',
                           e.category.name,
-                          DateFormat('HH:mm').format(e.date),
                         ])
                     .toList(),
                 cellStyle: pw.TextStyle(fontSize: 12),
@@ -77,8 +84,20 @@ class ExportService {
                   1: pw.Alignment.centerLeft,
                   2: pw.Alignment.centerRight,
                   3: pw.Alignment.centerLeft,
-                  4: pw.Alignment.center,
                 },
+              ),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                children: [
+                  pw.Text(
+                    'Total Expenses: \$${totalAmount.toStringAsFixed(2)}',
+                    style: pw.TextStyle(
+                      fontSize: 14,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ],
           );

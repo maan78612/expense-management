@@ -34,7 +34,7 @@ class BottomSheetContent extends ConsumerWidget {
     final icons = [AppImages.home, AppImages.formIcon, AppImages.setting];
     final padding = MediaQuery.of(context).padding;
     return Container(
-      padding: EdgeInsets.only(top: 16.sp).add(padding),
+      padding: EdgeInsets.symmetric(vertical: 16.sp).add(padding),
       decoration:
           BoxDecoration(color: AppColorHelper.getPrimaryColor(colorMode)),
       child: Row(

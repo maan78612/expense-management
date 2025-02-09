@@ -10,10 +10,8 @@ import 'package:expense_managment/src/core/constants/globals.dart';
 import 'package:expense_managment/src/core/constants/images.dart';
 import 'package:expense_managment/src/core/constants/text_field_validator.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
-import 'package:expense_managment/src/core/enums/snackbar_status.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
 import 'package:expense_managment/src/core/utilities/dialog_box.dart';
-import 'package:expense_managment/src/core/utilities/snack_bar.dart';
 import 'package:expense_managment/src/features/auth/presentation/viewmodels/signup_viewmodel.dart';
 import 'package:expense_managment/src/features/auth/presentation/views/login_view.dart';
 

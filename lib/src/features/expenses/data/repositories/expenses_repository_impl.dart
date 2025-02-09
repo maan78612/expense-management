@@ -1,5 +1,3 @@
-import 'package:expense_managment/src/core/constants/globals.dart';
-import 'package:expense_managment/src/features/dashboard/domain/models/category.dart';
 import 'package:expense_managment/src/features/expenses/data/data_source/local/expense_data_source.dart';
 import 'package:expense_managment/src/features/expenses/domain/models/expense.dart';
 import 'package:expense_managment/src/features/expenses/domain/repositories/expenses_repository.dart';

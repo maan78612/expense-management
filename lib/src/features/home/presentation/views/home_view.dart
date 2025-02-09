@@ -1,6 +1,5 @@
 import 'package:expense_managment/src/core/commons/custom_inkwell.dart';
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
-import 'package:expense_managment/src/core/constants/colors.dart';
 import 'package:expense_managment/src/core/constants/fonts.dart';
 import 'package:expense_managment/src/core/constants/images.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';

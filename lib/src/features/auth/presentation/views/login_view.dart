@@ -32,11 +32,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   void initState() {
+    // In LoginView's initState:
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(loginViewModelProvider).autoLogin(onSuccess: (UserModel user) {
-        ref.read(userModelProvider.notifier).setUser(user);
-        CustomNavigation().pushAndRemoveUntil(const DashBoardScreen());
-      });
+      final bool isIntegrationTest =
+          const bool.fromEnvironment('IS_INTEGRATION_TEST');
+      debugPrint('IS_INTEGRATION_TEST: $isIntegrationTest');
+      if (!isIntegrationTest) {
+        // Only auto-login if NOT in integration test mode
+        ref.read(loginViewModelProvider).autoLogin(onSuccess: (UserModel user) {
+          ref.read(userModelProvider.notifier).setUser(user);
+          CustomNavigation().pushAndRemoveUntil(const DashBoardScreen());
+        });
+      }
     });
 
     super.initState();
@@ -75,6 +82,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ),
                   60.verticalSpace,
                   CustomInputField(
+                    textFieldKey: const Key('email-field'),
                     prefixWidget: Image.asset(AppImages.email,
                         color: AppColorHelper.getIconColor(colorMode)),
                     hint: "Email",
@@ -90,6 +98,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ),
                   10.verticalSpace,
                   CustomInputField(
+                    textFieldKey: const Key('password-field'),
                     prefixWidget: Image.asset(AppImages.password,
                         color: AppColorHelper.getIconColor(colorMode)),
                     hint: "Password",
@@ -118,6 +127,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   120.verticalSpace,
                   CustomButton(
                     title: 'Login',
+                    key: const Key('login-button'),
                     isEnable: loginViewModel.isBtnEnable,
                     bgColor: AppColorHelper.getPrimaryColor(colorMode),
                     onPressed: () {

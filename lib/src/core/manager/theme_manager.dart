@@ -47,7 +47,7 @@ class ThemeManager {
     final db = await database;
     final maps = await db.query('theme');
     debugPrint("maps = $maps");
-    if (maps.isEmpty) return true;
+    if (maps.isEmpty) return false;
     return maps[0]['isDarkMode'] == 1;
   }
 }

@@ -5,8 +5,7 @@ class _HomeTabBar extends ConsumerWidget {
   final ColorMode colorMode;
 
   const _HomeTabBar(
-      {super.key,
-      required this.homeViewModelProvider,
+      {required this.homeViewModelProvider,
       required this.colorMode});
 
   @override
@@ -65,7 +64,6 @@ class _StatusButton extends ConsumerWidget {
   final VoidCallback onTap;
 
   const _StatusButton({
-    super.key,
     required this.tabBarEnum,
     required this.isSelected,
     required this.colorMode,

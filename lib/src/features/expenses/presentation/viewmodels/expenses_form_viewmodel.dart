@@ -41,7 +41,7 @@ class ExpenseFormViewModel with ChangeNotifier {
 
   void initMethod(ExpenseModel? expense) {
     if (expense != null) {
-      debugPrint("selectedDate = ${selectedDate}");
+      debugPrint("selectedDate = $selectedDate");
       titleController.controller.text = expense.title;
       amountController.controller.text = expense.amount.toString();
       selectedDate = expense.date;
@@ -84,7 +84,7 @@ class ExpenseFormViewModel with ChangeNotifier {
         date: selectedDate!,
         id: expense?.id ?? DateTime.now().millisecondsSinceEpoch,
       );
-      debugPrint("selectedDate = ${selectedDate}");
+      debugPrint("selectedDate = $selectedDate");
       try {
         setLoading(true);
         if (expense != null) {
@@ -92,9 +92,9 @@ class ExpenseFormViewModel with ChangeNotifier {
         } else {
           await _expensesRepository.saveExpenses(user.email, newExpense);
         }
-        _sendNotification(expense, user);
         clearForm();
         CustomNavigation().pop();
+        _sendNotification(expense, user);
       } catch (e) {
         debugPrint(e.toString());
         SnackBarUtils.show(e.toString(), SnackBarType.error);
@@ -106,17 +106,16 @@ class ExpenseFormViewModel with ChangeNotifier {
 
   Future<void> _sendNotification(ExpenseModel? expense, UserModel user) {
     return NotificationManager().send(
-        title: expense != null ? "Expense Updated" : "Expense Added",
-        message: expense != null
-            ? "Expense has been updated successfully"
-            : "Expense has been added successfully ",
-        sendTo: [
-          user.email,
-        ],
-        type: expense != null
-            ? NotificationType.warning
-            : NotificationType.success,
-      );
+      title: expense != null ? "Expense Updated" : "Expense Added",
+      message: expense != null
+          ? "Expense has been updated successfully"
+          : "Expense has been added successfully ",
+      sendTo: [
+        user.email,
+      ],
+      type:
+          expense != null ? NotificationType.warning : NotificationType.success,
+    );
   }
 
   void clearForm() {

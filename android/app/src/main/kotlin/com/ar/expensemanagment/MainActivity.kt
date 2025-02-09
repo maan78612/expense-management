@@ -1,5 +1,6 @@
-package com.example.expense_managment
+package com.ar.expensemanagment
 
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity()
+

@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomInputField extends StatefulWidget {
   final String? hint;
+  final Key? textFieldKey;
   final String? title;
   final Widget? prefixWidget;
   final CustomTextController controller;
@@ -44,6 +45,7 @@ class CustomInputField extends StatefulWidget {
   const CustomInputField(
       {super.key,
       this.title,
+      this.textFieldKey,
       this.isDecorationEnable = true,
       this.verticalAlign = false,
       this.expand = true,
@@ -84,6 +86,20 @@ class _CustomInputField extends State<CustomInputField> {
   void initState() {
     super.initState();
     obscure = widget.obscure!;
+    // Add listener to trigger onChange
+    widget.controller.controller.addListener(_handleTextChange);
+  }
+
+  void _handleTextChange() {
+    if (widget.onChange != null) {
+      widget.onChange!(widget.controller.controller.text);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.controller.removeListener(_handleTextChange);
+    super.dispose();
   }
 
   @override
@@ -101,6 +117,7 @@ class _CustomInputField extends State<CustomInputField> {
           11.verticalSpace,
         ],
         TextFormField(
+          key: widget.textFieldKey,
           autofocus: widget.autoFocus,
           focusNode: widget.controller.focusNode,
           onFieldSubmitted: widget.onSubmit,

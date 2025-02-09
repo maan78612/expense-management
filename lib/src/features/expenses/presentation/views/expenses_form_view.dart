@@ -82,6 +82,7 @@ class _ExpenseFormViewState extends ConsumerState<ExpenseFormView> {
                   hint: "12",
                   title: "Amount",
                   textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.number,
                   controller: expenseFormViewModel.amountController,
                   onChange: (value) {
                     expenseFormViewModel.onChange(

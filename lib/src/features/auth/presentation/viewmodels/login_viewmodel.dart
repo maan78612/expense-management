@@ -1,8 +1,5 @@
 import 'package:expense_managment/src/features/auth/domain/models/user_model.dart';
-import 'package:expense_managment/src/features/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/commons/custom_text_controller.dart';
 import 'package:expense_managment/src/core/enums/snackbar_status.dart';
 import 'package:expense_managment/src/core/utilities/snack_bar.dart';
@@ -10,8 +7,11 @@ import 'package:expense_managment/src/features/auth/data/repositories/auth_repos
 import 'package:expense_managment/src/features/auth/domain/repositories/auth_repository.dart';
 
 class LoginViewModel with ChangeNotifier {
-  // Repository for authentication-related operations
-  final AuthRepository _authRepository = AuthRepositoryImpl();
+  // Inject AuthRepository via the constructor. If none is provided, use the real implementation.
+  final AuthRepository authRepository;
+
+  LoginViewModel({AuthRepository? authRepository})
+      : authRepository = authRepository ?? AuthRepositoryImpl();
 
   // Controllers for email and password input fields
   CustomTextController emailCon = CustomTextController(
@@ -57,6 +57,7 @@ class LoginViewModel with ChangeNotifier {
     if (validator != null) {
       con.error = validator(value);
     }
+    debugPrint('Field validation error: ${con.error}');
     setEnableBtn();
   }
 
@@ -66,7 +67,9 @@ class LoginViewModel with ChangeNotifier {
         passwordCon.controller.text.isNotEmpty &&
         emailCon.error == null &&
         passwordCon.error == null;
-
+    debugPrint('Email: ${emailCon.controller.text}'); // Add this
+    debugPrint('Password: ${passwordCon.controller.text}'); // Add this
+    debugPrint('Button enabled: $_isBtnEnable');
     notifyListeners();
   }
 
@@ -81,7 +84,7 @@ class LoginViewModel with ChangeNotifier {
       };
 
       // Attempt to login using the provided credentials
-      final loginUser = await _authRepository.login(body: body);
+      final loginUser = await authRepository.login(body: body);
 
       onSuccess(loginUser); // Pass loginUser as an argument to onSuccess
     } catch (e) {
@@ -96,14 +99,13 @@ class LoginViewModel with ChangeNotifier {
     try {
       setLoading(true);
 
-
-      final loginUser = await _authRepository.autoLogin();
+      final loginUser = await authRepository.autoLogin();
 
       if (loginUser != null) {
         onSuccess(loginUser); // Pass loginUser as an argument to onSuccess
       }
     } catch (e) {
-      // Show an error message if login fails
+      // Show an error message if auto-login fails
       SnackBarUtils.show(e.toString(), SnackBarType.error);
     } finally {
       setLoading(false);

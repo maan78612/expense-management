@@ -1,5 +1,4 @@
 import 'package:expense_managment/src/features/dashboard/domain/models/category.dart';
-import 'package:expense_managment/src/features/expenses/domain/models/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

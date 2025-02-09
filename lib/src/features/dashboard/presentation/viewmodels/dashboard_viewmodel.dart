@@ -1,6 +1,4 @@
-import 'package:expense_managment/src/core/constants/globals.dart';
 import 'package:expense_managment/src/features/dashboard/data/repositories/dashboard_repository_impl.dart';
-import 'package:expense_managment/src/features/dashboard/domain/models/category.dart';
 import 'package:expense_managment/src/features/dashboard/domain/repositories/dashboard_repository.dart';
 import 'package:flutter/material.dart';
 

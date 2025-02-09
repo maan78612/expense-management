@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/enums/snackbar_status.dart';
 import 'package:expense_managment/src/core/utilities/snack_bar.dart';
-import 'package:expense_managment/src/features/auth/data/data_source/remote/auth_data_source.dart';
 import 'package:expense_managment/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:expense_managment/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';

@@ -129,8 +129,14 @@ class _ExpensesListViewState extends ConsumerState<ExpensesListView> {
             await CustomNavigation().push(ExpenseFormView());
             expenseListViewModel.fetchExpenses(ref.read(userModelProvider));
           },
-          icon: Icon(Icons.add),
-          label: Text('Add Expense'),
+          icon: Icon(Icons.add,
+              color: AppColorHelper.getScaffoldColor(colorMode)),
+          label: Text(
+            'Add Expense',
+            style: PoppinsStyles.regular(
+                    color: AppColorHelper.getScaffoldColor(colorMode))
+                .copyWith(fontSize: 12.sp),
+          ),
           backgroundColor: AppColorHelper.getPrimaryColor(colorMode),
         ),
       ),
@@ -206,7 +212,9 @@ class _ExpensesListViewState extends ConsumerState<ExpensesListView> {
               15.verticalSpace,
               Divider(),
               15.verticalSpace,
-              CustomButton(
+
+              /// TODO : temporarily comment fix this if all tasks completed
+              /*  CustomButton(
                   bgColor: AppColorHelper.getPrimaryColor(colorMode),
                   title: 'Export to CSV',
                   onPressed: () async {
@@ -218,7 +226,7 @@ class _ExpensesListViewState extends ConsumerState<ExpensesListView> {
                       SnackBarUtils.show(e.toString(), SnackBarType.error);
                     }
                   }),
-              20.verticalSpace,
+              20.verticalSpace,*/
               CustomButton(
                   bgColor: AppColorHelper.getPrimaryColor(colorMode),
                   title: 'Export to PDF',

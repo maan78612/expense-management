@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCZLjwuiUOx0pdN8GiY52wKRNz4ZEaAeCE',
-    appId: '1:122832460056:android:0432beae506ded0e88266d',
-    messagingSenderId: '122832460056',
-    projectId: 'expense-managment-b15ec',
-    storageBucket: 'expense-managment-b15ec.firebasestorage.app',
+    apiKey: 'AIzaSyBRwwShpQHy3-yDv9-knStYOPoeQZXncsY',
+    appId: '1:408055578668:android:f61f089075d87e25c61189',
+    messagingSenderId: '408055578668',
+    projectId: 'expense-management-a55f2',
+    storageBucket: 'expense-management-a55f2.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA7EBDjhla7FPIHhSKmNCa5XmYfjo9EaQE',
-    appId: '1:122832460056:ios:1282e069f414293088266d',
-    messagingSenderId: '122832460056',
-    projectId: 'expense-managment-b15ec',
-    storageBucket: 'expense-managment-b15ec.firebasestorage.app',
-    iosBundleId: 'com.example.expenseManagment',
+    apiKey: 'AIzaSyCywNgz4rQKq6lBU5MqazVgBdS6hfXuoRE',
+    appId: '1:408055578668:ios:93bf0fe8a8be11b6c61189',
+    messagingSenderId: '408055578668',
+    projectId: 'expense-management-a55f2',
+    storageBucket: 'expense-management-a55f2.firebasestorage.app',
+    iosBundleId: 'com.ar.expensemanagment',
   );
 }

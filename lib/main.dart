@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             navigatorKey: CustomNavigation().navigatorKey,
-            title: 'Firebase Structure',
+            title: 'Expense Management',
             home: SplashView(),
           ),
         );

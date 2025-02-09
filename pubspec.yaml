@@ -50,11 +50,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/images/app_icon.png"
-  remove_alpha_ios: true
+  integration_test:
+    sdk: flutter
+  mockito: ^5.4.2
+  build_runner: ^2.4.6
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -78,7 +77,7 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
-    - assets/expense-managment-b15ec-firebase-adminsdk-fbsvc-7219be074c.json
+    - assets/expense-management-a55f2-firebase-adminsdk-fbsvc-908026b7f0.json
 
   fonts:
     - family: Poppins

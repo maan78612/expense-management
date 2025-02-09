@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:googleapis_auth/auth_io.dart';
 
 class NotificationManager {
-
   NotificationManager._privateConstructor();
 
   static final NotificationManager _instance =
@@ -23,8 +22,9 @@ class NotificationManager {
     return _notificationsRepository!;
   }
 
+  /// Important : expense-management-a55f2 is project id replace it with yours
   final String url =
-      'https://fcm.googleapis.com/v1/projects/firebase_structure/messages:send';
+      'https://fcm.googleapis.com/v1/projects/expense-management-a55f2/messages:send';
 
   Future<void> send({
     required String title,
@@ -112,8 +112,8 @@ class NotificationManager {
   }
 
   Future<AutoRefreshingAuthClient> _getClient() async {
-    final String jsonString = await rootBundle
-        .loadString('assets/expense-managment-b15ec-firebase-adminsdk-fbsvc-7219be074c.json');
+    final String jsonString = await rootBundle.loadString(
+        'assets/expense-management-a55f2-firebase-adminsdk-fbsvc-908026b7f0.json');
 
     final serviceAccount = ServiceAccountCredentials.fromJson(jsonString);
 
