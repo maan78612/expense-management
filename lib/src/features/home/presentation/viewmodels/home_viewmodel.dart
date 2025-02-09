@@ -1,7 +1,9 @@
 import 'package:expense_managment/src/core/constants/fonts.dart';
+import 'package:expense_managment/src/core/constants/globals.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
-import 'package:expense_managment/src/features/home/domain/model/expense_categoty.dart';
+import 'package:expense_managment/src/features/expenses/domain/models/expense.dart';
+import 'package:expense_managment/src/features/home/domain/model/chart_info.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_managment/src/core/enums/tab_bar_enum.dart';
@@ -38,63 +40,45 @@ class HomeViewModel with ChangeNotifier {
 
   /// Resets the month if the saved month is not the current month.
   /// This includes resetting the user's remaining balance and their beneficiaries' balances.
-  Future<void> initMethod(UserModel user) async {}
+  Future<void> initMethod(UserModel user) async {
+    _totalChartInfo = await _calculateTotalChartInfo(user);
+
+    notifyListeners();
+  }
+
+  Future<List<ChartInfoModel>> _calculateTotalChartInfo(UserModel user) async {
+    final List<ExpenseModel> userExpenses =
+        await _homeRepository.getExpenses(user.email);
+
+    if (userExpenses.isNotEmpty) {
+      return categories.map((category) {
+        final double totalAmount = userExpenses
+            .where((expense) => expense.category.id == category.id)
+            .fold(0, (sum, expense) => sum + expense.amount);
+
+        return ChartInfoModel(category: category, amount: totalAmount);
+      }).toList();
+    } else {
+      return [];
+    }
+  }
 
   ///*---------------------------------------------------------------------*///
   ///*-------------------------> Chart <-----------------------------------*///
   ///*---------------------------------------------------------------------*///
-  final List<ExpenseCategory> _categories = [
-    ExpenseCategory(
-      name: 'Food',
-      amount: 300,
-      color: Colors.red,
-      date: DateTime(2023, 10, 1),
-      id: 1,
-      icon: Icons.fastfood,
-    ),
-    ExpenseCategory(
-        name: 'Transport',
-        amount: 150,
-        color: Colors.blue,
-        date: DateTime(2023, 10, 2),
-        id: 2,
-        icon: Icons.motorcycle),
-    ExpenseCategory(
-        name: 'Entertainment',
-        amount: 100,
-        color: Colors.green,
-        date: DateTime(2023, 10, 3),
-        id: 3,
-        icon: Icons.movie_filter_sharp),
-    ExpenseCategory(
-      name: 'Utilities',
-      amount: 200,
-      icon: Icons.category,
-      color: Colors.orange,
-      date: DateTime(2023, 10, 4),
-      id: 4,
-    ),
-    ExpenseCategory(
-      name: 'Traveling',
-      amount: 10,
-      icon: Icons.travel_explore,
-      color: Colors.purple,
-      date: DateTime(2023, 10, 4),
-      id: 4,
-    ),
-  ];
+  List<ChartInfoModel> _totalChartInfo = [];
 
   /// ---------------------------> Pie chart <----------------------------///
-  List<ExpenseCategory> get categories => _categories;
+  List<ChartInfoModel> get totalChartInfo => _totalChartInfo;
 
   double get totalExpenses =>
-      _categories.fold(0, (sum, category) => sum + category.amount);
+      _totalChartInfo.fold(0, (sum, expense) => sum + expense.amount);
 
   List<PieChartSectionData> pieChartSections(ColorMode colorMode) {
-    return _categories.map((category) {
-      final double percentage = (category.amount / totalExpenses) * 100;
+    return _totalChartInfo.map((expense) {
+      final double percentage = (expense.amount / totalExpenses) * 100;
       return PieChartSectionData(
-        color: category.color,
+        color: expense.category.color,
         value: percentage,
         title: '${percentage.toStringAsFixed(1)}%',
         radius: 50.sp,
@@ -107,8 +91,8 @@ class HomeViewModel with ChangeNotifier {
         // Position badge outside the chart
         gradient: LinearGradient(
           colors: [
-            category.color.withOpacity(0.8),
-            category.color.withOpacity(0.2),
+            expense.category.color.withOpacity(0.8),
+            expense.category.color.withOpacity(0.2),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -128,8 +112,8 @@ class HomeViewModel with ChangeNotifier {
 
     final sectionIndex = touchResponse.touchedSection!.touchedSectionIndex;
     // Check if the sectionIndex is valid
-    if (sectionIndex < 0 || sectionIndex >= _categories.length) return;
-    final category = _categories[sectionIndex];
+    if (sectionIndex < 0 || sectionIndex >= _totalChartInfo.length) return;
+    final expense = _totalChartInfo[sectionIndex];
 
     final overlayState = Overlay.of(context); // Use the widget's context
     final renderBox = context.findRenderObject() as RenderBox;
@@ -148,7 +132,7 @@ class HomeViewModel with ChangeNotifier {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              '${category.name}\n${category.amount.toStringAsFixed(2)}',
+              '${expense.category.name}\n${expense.amount.toStringAsFixed(2)}',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
@@ -176,18 +160,18 @@ class HomeViewModel with ChangeNotifier {
 
   /// ---------------------------> Bar chart <----------------------------///
   List<BarChartGroupData> get barChartGroups {
-    return _categories.asMap().entries.map((entry) {
+    return _totalChartInfo.asMap().entries.map((entry) {
       final index = entry.key;
-      final category = entry.value;
+      final expense = entry.value;
       return BarChartGroupData(
         x: index,
         barRods: [
           BarChartRodData(
-            toY: category.amount,
+            toY: expense.amount,
             gradient: LinearGradient(
               colors: [
-                category.color.withOpacity(0.8),
-                category.color.withOpacity(0.2),
+                expense.category.color.withOpacity(0.8),
+                expense.category.color.withOpacity(0.2),
               ],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
@@ -208,11 +192,11 @@ class HomeViewModel with ChangeNotifier {
 
   /// Bar chart titles (category names)
   List<String> get barChartTitles {
-    return _categories.map((category) => category.name).toList();
+    return _totalChartInfo.map((category) => category.category.name).toList();
   }
 
   /// Bar chart axis titles and styling
-  FlTitlesData  barTitlesData(ColorMode colorMode) {
+  FlTitlesData barTitlesData(ColorMode colorMode) {
     return FlTitlesData(
       bottomTitles: AxisTitles(
         sideTitles: SideTitles(
@@ -221,12 +205,9 @@ class HomeViewModel with ChangeNotifier {
             return Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-
-                    barChartTitles[value.toInt()],
+                barChartTitles[value.toInt()],
                 style: PoppinsStyles.regular(
-                  color:
-                  AppColorHelper.getPrimaryTextColor(
-                      colorMode),
+                  color: AppColorHelper.getPrimaryTextColor(colorMode),
                 ).copyWith(fontSize: 10.sp),
               ),
             );
@@ -240,8 +221,7 @@ class HomeViewModel with ChangeNotifier {
             return Text(
               value.toInt().toString(),
               style: PoppinsStyles.regular(
-                color: AppColorHelper.getPrimaryTextColor(
-                    colorMode),
+                color: AppColorHelper.getPrimaryTextColor(colorMode),
               ).copyWith(fontSize: 8.sp),
             );
           },

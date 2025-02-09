@@ -1,5 +1,8 @@
 import 'package:expense_managment/firebase_options.dart';
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
+import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
+import 'package:expense_managment/src/core/manager/color_manager.dart';
+import 'package:expense_managment/src/core/manager/theme_manager.dart';
 import 'package:expense_managment/src/core/services/notification/firebase_notification_manager.dart';
 import 'package:expense_managment/src/features/splash/presentation/views/splash_view.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,11 +14,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   await _initMethod();
-  runApp(const ProviderScope(child: MyApp()));
+
+  bool isDarkMode = await ThemeManager().getThemeState();
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        colorModeProvider.overrideWith(
+          (ref) => ColorModeNotifier()
+            ..setColorMode(isDarkMode ? ColorMode.dark : ColorMode.light),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 Future<void> _initMethod() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FBNotificationManager().init();
 
@@ -44,7 +61,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             navigatorKey: CustomNavigation().navigatorKey,
             title: 'Firebase Structure',
-            home:  SplashView(),
+            home: SplashView(),
           ),
         );
       },

@@ -54,27 +54,33 @@ class _CustomLoaderState extends State<CustomLoader>
         opacity: 0.55,
         progressIndicator: ScaleTransition(
           scale: _animation,
-          child: widget.loader ??
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 24.sp,
-                    width: 24.sp,
-                    child: const CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.lightPrimaryColor)),
-                  ),
-                  8.horizontalSpace,
-                  Text(
-                    'Loading',
-                    style: PoppinsStyles.regular(color: AppColors.lightPrimaryColor)
-                        .copyWith(fontSize: 18.sp),
-                  ),
-                ],
-              ),
+          child: Container(
+           
+            decoration: BoxDecoration( color: AppColors.darkPrimaryColor,borderRadius: BorderRadius.all(Radius.circular(7))),
+            padding: EdgeInsets.all(14),
+            child: widget.loader ??
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 24.sp,
+                      width: 24.sp,
+                      child: const CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.blackColor)),
+                    ),
+                    8.horizontalSpace,
+                    Text(
+                      'Loading',
+                      style: PoppinsStyles.regular(
+                              color: AppColors.blackColor)
+                          .copyWith(fontSize: 18.sp),
+                    ),
+                  ],
+                ),
+          ),
         ),
         child: widget.child,
       ),

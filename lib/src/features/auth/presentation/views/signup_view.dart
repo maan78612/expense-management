@@ -3,6 +3,7 @@ import 'package:expense_managment/src/core/commons/custom_inkwell.dart';
 import 'package:expense_managment/src/core/commons/custom_input_field.dart';
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/commons/loader.dart';
+import 'package:expense_managment/src/core/commons/success_dialog.dart';
 import 'package:expense_managment/src/core/constants/colors.dart';
 import 'package:expense_managment/src/core/constants/fonts.dart';
 import 'package:expense_managment/src/core/constants/globals.dart';
@@ -11,6 +12,7 @@ import 'package:expense_managment/src/core/constants/text_field_validator.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
 import 'package:expense_managment/src/core/enums/snackbar_status.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
+import 'package:expense_managment/src/core/utilities/dialog_box.dart';
 import 'package:expense_managment/src/core/utilities/snack_bar.dart';
 import 'package:expense_managment/src/features/auth/presentation/viewmodels/signup_viewmodel.dart';
 import 'package:expense_managment/src/features/auth/presentation/views/login_view.dart';
@@ -129,13 +131,14 @@ class SignUpScreen extends ConsumerWidget {
                     isEnable: signupViewModel.isBtnEnable,
                     bgColor: AppColorHelper.getPrimaryColor(colorMode),
                     onPressed: () {
-                      signupViewModel.signUpButton(
-                        showSnackBarMsg: ({
-                          required SnackBarType snackType,
-                          required String message,
-                        }) =>
-                            SnackBarUtils.show(message, snackType),
-                      );
+                      signupViewModel.signUpButton(onSuccess: () {
+                        CustomNavigation().pop();
+                        DialogBoxUtils.show(SuccessDialog(
+                            text: 'Account has been created successfully',
+                            heading: 'Account created!',
+                            colorMode: colorMode,
+                            img: AppImages.successIcon));
+                      });
                     },
                   ),
                   Padding(
@@ -160,7 +163,8 @@ class SignUpScreen extends ConsumerWidget {
                                 child: Text(
                                   " Sign in",
                                   style: PoppinsStyles.bold(
-                                          color: AppColorHelper.getPrimaryColor(colorMode))
+                                          color: AppColorHelper.getPrimaryColor(
+                                              colorMode))
                                       .copyWith(
                                     fontSize: 16.sp,
                                   ),

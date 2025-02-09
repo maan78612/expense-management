@@ -1,9 +1,12 @@
 import 'package:expense_managment/src/core/commons/custom_inkwell.dart';
+import 'package:expense_managment/src/core/commons/custom_navigation.dart';
+import 'package:expense_managment/src/core/constants/colors.dart';
 import 'package:expense_managment/src/core/constants/fonts.dart';
 import 'package:expense_managment/src/core/constants/images.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
 import 'package:expense_managment/src/core/enums/tab_bar_enum.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
+import 'package:expense_managment/src/features/notifications/presentation/views/notification_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
@@ -13,11 +16,11 @@ import 'package:expense_managment/src/core/commons/loader.dart';
 import 'package:expense_managment/src/core/constants/globals.dart';
 import 'package:expense_managment/src/features/home/presentation/viewmodels/home_viewmodel.dart';
 
-part 'componenets/home_tab_bar.dart';
+part 'components/home_tab_bar.dart';
 
-part 'componenets/welcome_app_bar.dart';
+part 'components/welcome_app_bar.dart';
 
-part 'componenets/chart.dart';
+part 'components/chart.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});

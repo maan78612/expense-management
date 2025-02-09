@@ -1,15 +1,16 @@
 import 'package:expense_managment/src/core/commons/loader.dart';
-import 'package:expense_managment/src/core/constants/colors.dart';
 import 'package:expense_managment/src/core/constants/images.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
 import 'package:expense_managment/src/features/dashboard/presentation/viewmodels/dashboard_viewmodel.dart';
+import 'package:expense_managment/src/features/expenses/presentation/views/expense_list_view.dart';
 import 'package:expense_managment/src/features/home/presentation/views/home_view.dart';
+import 'package:expense_managment/src/features/settings/presentation/views/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-part 'componenets/bottom_navigation_bar.dart';
+part 'components/bottom_navigation_bar.dart';
 
 class DashBoardScreen extends ConsumerStatefulWidget {
   const DashBoardScreen({super.key});
@@ -47,9 +48,9 @@ class _DashBoardScreen extends ConsumerState<DashBoardScreen> {
       case 0:
         return const HomeView();
       case 1:
-        return Container();
+        return ExpensesListView();
       case 2:
-        return Container();
+        return SettingView();
 
       default:
         return Container();

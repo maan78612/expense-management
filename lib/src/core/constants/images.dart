@@ -10,4 +10,7 @@ class AppImages {
   static const String home = "assets/images/home.png";
   static const String setting = "assets/images/setting.png";
   static const String formIcon = "assets/images/form_Icon.png";
+  static const String faq = "assets/images/faq.png";
+  static const String deleteUser = "assets/images/delete_user.png";
+  static const String logout = "assets/images/logout.png";
 }

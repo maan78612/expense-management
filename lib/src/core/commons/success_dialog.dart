@@ -24,6 +24,7 @@ class SuccessDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 0.85.sw,
+      color: AppColorHelper.getScaffoldColor(colorMode),
       padding: EdgeInsets.all(12.sp), // Add padding
       child: Column(
         mainAxisSize: MainAxisSize.min, // Fit to content

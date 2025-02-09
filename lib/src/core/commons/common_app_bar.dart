@@ -1,6 +1,7 @@
 import 'package:expense_managment/src/core/commons/custom_inkwell.dart';
 import 'package:expense_managment/src/core/constants/colors.dart';
 import 'package:expense_managment/src/core/constants/fonts.dart';
+import 'package:expense_managment/src/core/constants/globals.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function? onTap;
   final PreferredSizeWidget? bottom;
   final ColorMode colorMode;
+  final List<Widget>? actions;
 
   const CommonAppBar({
     super.key,
@@ -18,6 +20,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.colorMode,
     this.bottom,
     this.onTap,
+    this.actions,
   });
 
   @override
@@ -32,9 +35,9 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onTap!();
               },
               child: Padding(
-                padding: EdgeInsets.only(right: 8.sp),
-                child:
-                    const Icon(Icons.arrow_back, color: AppColors.blackColor),
+                padding: EdgeInsets.only(left: hMargin),
+                child: Icon(Icons.arrow_back_ios,
+                    color: AppColorHelper.getPrimaryTextColor(colorMode)),
               ),
             )
           : const SizedBox.shrink(),
@@ -45,6 +48,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
             .copyWith(fontSize: 20.sp),
       ),
       bottom: bottom,
+      actions: actions,
     );
   }
 

@@ -1,6 +1,10 @@
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/commons/custom_text_controller.dart';
+import 'package:expense_managment/src/core/commons/success_dialog.dart';
+import 'package:expense_managment/src/core/constants/images.dart';
 import 'package:expense_managment/src/core/enums/snackbar_status.dart';
+import 'package:expense_managment/src/core/utilities/dialog_box.dart';
+import 'package:expense_managment/src/core/utilities/snack_bar.dart';
 import 'package:expense_managment/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:expense_managment/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +36,8 @@ class SignUpViewModel with ChangeNotifier {
 
   void onChange(
       {required CustomTextController con,
-        String? Function(String?)? validator,
-        required String value}) {
+      String? Function(String?)? validator,
+      required String value}) {
     if (validator != null) {
       con.error = validator(value);
     }
@@ -60,16 +64,10 @@ class SignUpViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUpButton(
-      {required Function({
-      required SnackBarType snackType,
-      required String message,
-      }) showSnackBarMsg}) async {
+  Future<void> signUpButton({required void Function() onSuccess}) async {
     if (passwordCon.controller.text != confirmPasswordCon.controller.text) {
-      showSnackBarMsg(
-        message: "Password and confirm password does not match",
-        snackType: SnackBarType.error,
-      );
+      SnackBarUtils.show(
+          "Password and confirm password does not match", SnackBarType.error);
     } else {
       try {
         setLoading(true);
@@ -81,16 +79,10 @@ class SignUpViewModel with ChangeNotifier {
         };
 
         await _authRepository.register(body: body);
-        CustomNavigation().pop();
-        showSnackBarMsg(
-          message: "Account has been created successfully",
-          snackType: SnackBarType.success,
-        );
+        onSuccess();
       } catch (e) {
-        showSnackBarMsg(
-          message: e.toString(),
-          snackType: SnackBarType.error,
-        );
+        SnackBarUtils.show(
+            e.toString(), SnackBarType.error);
       } finally {
         setLoading(false);
       }

@@ -1,1 +1,0 @@
-enum UserStatus { verified, notVerified }

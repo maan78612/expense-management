@@ -1,4 +1,4 @@
-part of 'package:expense_managment/src/features/dashboard/presentation/views/dashboard_screen/dashboard_screen.dart';
+part of 'package:expense_managment/src/features/dashboard/presentation/views/dashboard_screen.dart';
 
 class _BottomNavigationBar extends StatelessWidget {
   final int selectedIndex;

@@ -1,14 +1,13 @@
-import 'package:expense_managment/src/features/dashboard/presentation/views/dashboard_screen/dashboard_screen.dart';
+import 'package:expense_managment/src/features/auth/domain/models/user_model.dart';
+import 'package:expense_managment/src/features/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/commons/custom_text_controller.dart';
-import 'package:expense_managment/src/core/constants/globals.dart';
 import 'package:expense_managment/src/core/enums/snackbar_status.dart';
 import 'package:expense_managment/src/core/utilities/snack_bar.dart';
 import 'package:expense_managment/src/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:expense_managment/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:expense_managment/src/features/home/presentation/views/home_view.dart';
 
 class LoginViewModel with ChangeNotifier {
   // Repository for authentication-related operations
@@ -72,23 +71,19 @@ class LoginViewModel with ChangeNotifier {
   }
 
   /// Attempts to log the user in by communicating with the authentication repository.
-  Future<void> login(WidgetRef ref) async {
+  Future<void> login({required void Function(UserModel) onSuccess}) async {
     try {
-      // setLoading(true);
-      //
-      // final body = {
-      //   "email": emailCon.controller.text,
-      //   "password": passwordCon.controller.text,
-      // };
-      //
-      // // Attempt to login using the provided credentials
-      // final loginUser = await _authRepository.login(body: body);
-      //
-      // // Save the logged-in user data to the global user model
-      // ref.read(userModelProvider.notifier).setUser(loginUser);
+      setLoading(true);
 
-      // Navigate to the home view, replacing all previous routes
-      CustomNavigation().pushAndRemoveUntil(const DashBoardScreen());
+      final body = {
+        "email": emailCon.controller.text,
+        "password": passwordCon.controller.text,
+      };
+
+      // Attempt to login using the provided credentials
+      final loginUser = await _authRepository.login(body: body);
+
+      onSuccess(loginUser); // Pass loginUser as an argument to onSuccess
     } catch (e) {
       // Show an error message if login fails
       SnackBarUtils.show(e.toString(), SnackBarType.error);
@@ -97,26 +92,16 @@ class LoginViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> autoLogin(
-      {required WidgetRef ref,
-      required String email,
-      required String password}) async {
+  Future<void> autoLogin({required void Function(UserModel) onSuccess}) async {
     try {
       setLoading(true);
 
-      final body = {
-        "email": email,
-        "password": password,
-      };
 
-      // Attempt to login using the provided credentials
-      final loginUser = await _authRepository.login(body: body);
+      final loginUser = await _authRepository.autoLogin();
 
-      // Save the logged-in user data to the global user model
-      ref.read(userModelProvider.notifier).setUser(loginUser);
-
-      // Navigate to the home view, replacing all previous routes
-      CustomNavigation().pushAndRemoveUntil(const DashBoardScreen());
+      if (loginUser != null) {
+        onSuccess(loginUser); // Pass loginUser as an argument to onSuccess
+      }
     } catch (e) {
       // Show an error message if login fails
       SnackBarUtils.show(e.toString(), SnackBarType.error);

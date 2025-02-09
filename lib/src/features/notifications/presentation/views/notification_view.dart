@@ -13,14 +13,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
-class NotificationsScreen extends ConsumerStatefulWidget {
-  const NotificationsScreen({super.key});
+class NotificationsView extends ConsumerStatefulWidget {
+  const NotificationsView({super.key});
 
   @override
-  ConsumerState<NotificationsScreen> createState() => _NotificationsScreen();
+  ConsumerState<NotificationsView> createState() => _NotificationsScreen();
 }
 
-class _NotificationsScreen extends ConsumerState<NotificationsScreen> {
+class _NotificationsScreen extends ConsumerState<NotificationsView> {
   final _notificationsViewModelProvider =
       ChangeNotifierProvider<NotificationsViewModel>((ref) {
     return NotificationsViewModel();
@@ -44,7 +44,7 @@ class _NotificationsScreen extends ConsumerState<NotificationsScreen> {
     return CustomLoader(
       isLoading: notificationsViewModel.isLoading,
       child: Scaffold(
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: AppColorHelper.getScaffoldColor(colorMode),
         appBar: CommonAppBar(
           title: 'Notifications',
           onTap: () {
@@ -166,7 +166,7 @@ class _NotificationsScreen extends ConsumerState<NotificationsScreen> {
                                   }),
                                   if (entry.key != "Older")
                                     Divider(
-                                        color: AppColorHelper.dividerColor(
+                                        color: AppColorHelper.borderColor(
                                             colorMode)),
                                 ],
                               )

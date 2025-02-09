@@ -113,7 +113,7 @@ class NotificationManager {
 
   Future<AutoRefreshingAuthClient> _getClient() async {
     final String jsonString = await rootBundle
-        .loadString('assets/firebase_structure-firebase-adminsdk-file.json');
+        .loadString('assets/expense-managment-b15ec-firebase-adminsdk-fbsvc-7219be074c.json');
 
     final serviceAccount = ServiceAccountCredentials.fromJson(jsonString);
 

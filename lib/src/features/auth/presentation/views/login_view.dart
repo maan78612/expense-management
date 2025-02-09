@@ -2,8 +2,9 @@ import 'package:expense_managment/src/core/commons/custom_inkwell.dart';
 import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/enums/color_mode_enum.dart';
 import 'package:expense_managment/src/core/manager/color_manager.dart';
+import 'package:expense_managment/src/features/auth/domain/models/user_model.dart';
 import 'package:expense_managment/src/features/auth/presentation/views/signup_view.dart';
-import 'package:expense_managment/src/features/splash/domain/models/credential_model.dart';
+import 'package:expense_managment/src/features/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,9 +19,7 @@ import 'package:expense_managment/src/core/constants/text_field_validator.dart';
 import 'package:expense_managment/src/features/auth/presentation/viewmodels/login_viewmodel.dart';
 
 class LoginView extends ConsumerStatefulWidget {
-  final CredentialsModel? credentialsModel;
-
-  const LoginView({super.key, this.credentialsModel});
+  const LoginView({super.key});
 
   @override
   ConsumerState<LoginView> createState() => _LoginViewState();
@@ -34,12 +33,10 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (widget.credentialsModel != null) {
-        ref.read(loginViewModelProvider).autoLogin(
-            email: widget.credentialsModel!.email,
-            password: widget.credentialsModel!.password,
-            ref: ref);
-      }
+      ref.read(loginViewModelProvider).autoLogin(onSuccess: (UserModel user) {
+        ref.read(userModelProvider.notifier).setUser(user);
+        CustomNavigation().pushAndRemoveUntil(const DashBoardScreen());
+      });
     });
 
     super.initState();
@@ -112,8 +109,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     alignment: Alignment.centerRight,
                     child: Text("Forgot Password?",
                         style: PoppinsStyles.medium(
-                                color: AppColorHelper.getPrimaryTextColor(
-                                    colorMode))
+                                color:
+                                    AppColorHelper.getPrimaryColor(colorMode))
                             .copyWith(
                           fontSize: 15.sp,
                         )),
@@ -124,7 +121,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     isEnable: loginViewModel.isBtnEnable,
                     bgColor: AppColorHelper.getPrimaryColor(colorMode),
                     onPressed: () {
-                      loginViewModel.login(ref);
+                      loginViewModel.login(onSuccess: (UserModel user) {
+                        ref.read(userModelProvider.notifier).setUser(user);
+                        CustomNavigation()
+                            .pushAndRemoveUntil(const DashBoardScreen());
+                      });
                     },
                   ),
                   20.verticalSpace,
@@ -148,12 +149,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                               child: Text(
                                 " Sign Up",
                                 style: PoppinsStyles.bold(
-                                        color: AppColorHelper
-                                            .getPrimaryTextColor(colorMode))
-                                    .copyWith(
-                                        fontSize: 16.sp,
-                                        color: AppColorHelper
-                                            .getPrimaryTextColor(colorMode)),
+                                        color: AppColorHelper.getPrimaryColor(
+                                            colorMode))
+                                    .copyWith(fontSize: 16.sp),
                               )),
                         ),
                       ],

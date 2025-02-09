@@ -207,9 +207,7 @@ class _CustomInputField extends State<CustomInputField> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(widget.borderRadius.r),
       borderSide: BorderSide(
-        color: widget.colorMode == ColorMode.light
-            ? AppColors.borderColor
-            : AppColors.lightCardColor,
+        color: AppColorHelper.borderColor(widget.colorMode),
         width: widget.borderWidth,
       ),
     );
