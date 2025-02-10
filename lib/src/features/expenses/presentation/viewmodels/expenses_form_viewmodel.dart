@@ -1,4 +1,3 @@
-import 'package:expense_managment/src/core/commons/custom_navigation.dart';
 import 'package:expense_managment/src/core/enums/notification_type.dart';
 import 'package:expense_managment/src/core/enums/snackbar_status.dart';
 import 'package:expense_managment/src/core/services/notification/send_notification.dart';
@@ -14,7 +13,10 @@ import 'package:expense_managment/src/core/commons/custom_text_controller.dart';
 import 'package:intl/intl.dart';
 
 class ExpenseFormViewModel with ChangeNotifier {
-  final ExpensesRepository _expensesRepository = ExpensesRepositoryImpl();
+  final ExpensesRepository _expensesRepository;
+
+  ExpenseFormViewModel({ExpensesRepository? repository})
+      : _expensesRepository = repository ?? ExpensesRepositoryImpl();
   final CustomTextController titleController = CustomTextController(
       controller: TextEditingController(), focusNode: FocusNode());
   final CustomTextController amountController = CustomTextController(
@@ -73,10 +75,11 @@ class ExpenseFormViewModel with ChangeNotifier {
   Future<void> submitForm(UserModel user, ExpenseModel? expense) async {
     if (selectedDate == null) {
       SnackBarUtils.show('Select date of expenses', SnackBarType.warning);
+      return;
     } else if (selectedCategory == null) {
       SnackBarUtils.show('Select category ', SnackBarType.warning);
+      return;
     } else {
-      // Create new expense or update existing one
       final newExpense = ExpenseModel(
         title: titleController.controller.text,
         amount: double.parse(amountController.controller.text),
@@ -84,7 +87,6 @@ class ExpenseFormViewModel with ChangeNotifier {
         date: selectedDate!,
         id: expense?.id ?? DateTime.now().millisecondsSinceEpoch,
       );
-      debugPrint("selectedDate = $selectedDate");
       try {
         setLoading(true);
         if (expense != null) {
@@ -93,10 +95,8 @@ class ExpenseFormViewModel with ChangeNotifier {
           await _expensesRepository.saveExpenses(user.email, newExpense);
         }
         clearForm();
-        CustomNavigation().pop();
-        _sendNotification(expense, user);
+        await sendNotification(newExpense, user);
       } catch (e) {
-        debugPrint(e.toString());
         SnackBarUtils.show(e.toString(), SnackBarType.error);
       } finally {
         setLoading(false);
@@ -104,15 +104,13 @@ class ExpenseFormViewModel with ChangeNotifier {
     }
   }
 
-  Future<void> _sendNotification(ExpenseModel? expense, UserModel user) {
+  Future<void> sendNotification(ExpenseModel? expense, UserModel user) async {
     return NotificationManager().send(
       title: expense != null ? "Expense Updated" : "Expense Added",
       message: expense != null
           ? "Expense has been updated successfully"
           : "Expense has been added successfully ",
-      sendTo: [
-        user.email,
-      ],
+      sendTo: [user.email],
       type:
           expense != null ? NotificationType.warning : NotificationType.success,
     );

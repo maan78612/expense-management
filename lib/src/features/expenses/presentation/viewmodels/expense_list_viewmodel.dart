@@ -10,7 +10,10 @@ import 'package:expense_managment/src/features/expenses/domain/repositories/expe
 import 'package:flutter/material.dart';
 
 class ExpenseListViewModel with ChangeNotifier {
-  final ExpensesRepository _expenseRepository = ExpensesRepositoryImpl();
+  final ExpensesRepository _expenseRepository;
+
+  ExpenseListViewModel({ExpensesRepository? repository})
+      : _expenseRepository = repository ?? ExpensesRepositoryImpl();
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;

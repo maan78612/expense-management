@@ -17,18 +17,18 @@ void main() {
         // Launch the app.
         app.main();
         // Wait for initial render and for the splash animation plus delay to complete.
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();// To start app
         await tester.pump(const Duration(seconds: 2));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle();// To initiate screen before splash [on Android]
         await tester.pump(const Duration(seconds: 2));
-        await tester.pumpAndSettle();
+        await tester.pumpAndSettle(); // Open splash screen
         await tester.pump(const Duration(seconds: 2));
         await tester.pumpAndSettle();
       } catch (e, stackTrace) {
         fail("Exception during splash screen phase: $e\n$stackTrace");
       }
 
-      expect(find.byType(LoginView), findsOneWidget);
+      expect(find.byType(LoginView), findsOneWidget); // Find Login view
       // Find the email and password fields by their keys.
       final emailField = find.byKey(const Key('email-field'));
       final passwordField = find.byKey(const Key('password-field'));
